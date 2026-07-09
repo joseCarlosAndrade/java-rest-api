@@ -30,7 +30,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     // need those annotations to make updates
     @Modifying
     @Transactional
-    @Query("UPDATE orders SET price = ?1 WHERE id = ?2")
+    @Query(value = "UPDATE orders SET price = ?1 WHERE id = ?2", nativeQuery =true)
     int updateOrderPrice(
         @Param("newPrice") BigDecimal newPrice,
         @Param("orderId") Long orderId

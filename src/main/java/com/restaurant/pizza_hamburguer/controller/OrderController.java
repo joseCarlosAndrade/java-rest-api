@@ -27,7 +27,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<Order> placeOrder(@RequestBody OrderRequestDto request) {
         // call service
         // we dont need to handle logic and errors here, the global exception handler does that
@@ -37,7 +37,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<OrdersResponseDto> getMethodName() {
         OrdersResponseDto orders=  orderService.getAllOrders();
 

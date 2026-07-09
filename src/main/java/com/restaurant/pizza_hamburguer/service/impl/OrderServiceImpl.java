@@ -4,7 +4,6 @@ import com.restaurant.pizza_hamburguer.repository.OrderRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.restaurant.pizza_hamburguer.dto.OrderRequestDto;
@@ -20,7 +19,6 @@ import com.restaurant.pizza_hamburguer.utils.Mapper;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    private final OrderRequestDto orderRequestDto;
 
     private final OrderRepository orderRepository;
 
@@ -33,12 +31,11 @@ public class OrderServiceImpl implements OrderService {
     // @Autowired
     public OrderServiceImpl(ProductRepository productRepository,
                           ProductVariationRepository productVariationRepository,
-                          Mapper mapper, OrderRepository orderRepository, OrderRequestDto orderRequestDto) {
+                          Mapper mapper, OrderRepository orderRepository) {
         this.productRepository = productRepository;
         this.productVariationRepository = productVariationRepository;
         this.mapper = mapper;
         this.orderRepository = orderRepository;
-        this.orderRequestDto = orderRequestDto;
     }
 
     public Boolean createProduct(ProductDto productDto) {
@@ -57,6 +54,7 @@ public class OrderServiceImpl implements OrderService {
         List<Product> products = productRepository.findAll();
         List<ProductDto> productsDto = new ArrayList<>();
 
+        // NOTE: IT WORK WORK!!! STREAMS ARE LAZILY EVALUATED
         products.stream().map(
             product -> productsDto.add(
                 mapper.productToDto(product)
@@ -85,22 +83,15 @@ public class OrderServiceImpl implements OrderService {
 
     public OrdersResponseDto getAllOrders() {
         var orders = orderRepository.findAll();
-
-        // OrdersResponseDto ordersDto = new OrdersResponseDto(0, new ArrayList<>());
         
-        List<OrderRequestDto> ordersRequestDto = new ArrayList<>();
+        List<OrderRequestDto> ordersRequestDto = orders.stream()
+        .map(order -> OrderRequestDto.builder()
+            .productId(order.getProductId())
+            .quantity(order.getQuantity())
+            .totalCost(order.getTotalCost())
+            .build())
+        .toList(); // streams must end with terminal operation that forces execution bc they're lazy evaluated
 
-        orders.stream().map(
-            order -> ordersRequestDto.add(
-                OrderRequestDto.builder()
-                .productId(order.getProductId())
-                .quantity(order.getQuantity())
-                .totalCost(order.getTotalCost())
-                .build()
-            ));
-        
-        OrdersResponseDto ordersDto = new OrdersResponseDto(ordersRequestDto.size(), ordersRequestDto);
-            
-        return ordersDto;
+        return new OrdersResponseDto(ordersRequestDto.size(), ordersRequestDto);
     }
 }

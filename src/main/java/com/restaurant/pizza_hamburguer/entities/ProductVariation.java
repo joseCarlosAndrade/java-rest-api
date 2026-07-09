@@ -2,13 +2,13 @@ package com.restaurant.pizza_hamburguer.entities;
 
 import java.math.BigDecimal;
 
-import org.hibernate.annotations.ManyToAny;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +34,7 @@ public class ProductVariation {
 
     private BigDecimal price;
 
-    @ManyToAny
+    @ManyToOne
     @JoinColumn(name = "product_id") // acual field in the db
     private Product product; // variable used in mappedBy
 }

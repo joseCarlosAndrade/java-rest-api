@@ -10,12 +10,14 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity // its an entity in the database
-@Table(name = "products") // name of the table
+@Table(name = "orders") // name of the table
 @Builder // lombok annotation that reduces boilerplate
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Order {
