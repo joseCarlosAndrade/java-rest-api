@@ -1,5 +1,6 @@
 package com.restaurant.pizza_hamburguer.entities;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.restaurant.pizza_hamburguer.enums.Category;
@@ -39,6 +40,8 @@ public class Product {
     private Category category;
 
     private Boolean available;
+
+    private BigDecimal price;
 
     // tells its a 1:N relationship. hibernate NEEDS the bidirectional relation even though
     // in the actual database schema the only foreign key will be in product_variations
