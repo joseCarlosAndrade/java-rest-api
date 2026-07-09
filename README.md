@@ -42,3 +42,21 @@ curl -X POST http://localhost:8081/api/v1/orders \
     -H "Content-Type: application/json" \
     -d '{"productId": 101, "quantity": 3, "totalCost"  : 10.1}'
 ```
+
+## docs
+
+jpa is java persistence api. its a specification (not executable), a collection of interfaces and guidelines to use persistence in java.
+
+```java
+@Entity, @Id, @Table
+```
+
+hibernate is an implementation of this guide. it manages connection pools, raw sql queries, data rows and java objects.
+
+spring data jpa is a third layer built on top of jpa to reduce hibernate boilerblates.
+
+ex:
+
+```java
+public interface OrderRepository extends JpaRepository<...>
+```
